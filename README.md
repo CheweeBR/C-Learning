@@ -1,5 +1,3 @@
-# C-Learning
-
 ## Exercícios de Linguagem C
 
 ### Objetivos ❕
