@@ -10,5 +10,5 @@
   <img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white">
 </div>
 
-#### Disciplinas cursadas de Algoritmos, Técnicas de Programação e Estrutura de dados na Universidade Técnologica Federal do Paraná - UTFPR.
+#### Disciplinas cursadas: Algoritmo, Técnicas de Programação e Estrutura de dados na Universidade Técnologica Federal do Paraná - UTFPR.
 
