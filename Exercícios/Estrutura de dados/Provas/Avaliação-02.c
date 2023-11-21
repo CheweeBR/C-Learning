@@ -11,64 +11,98 @@ typedef struct no {
     struct no *proximo;
 } No;
 
-void Inserir(No **fila, Paciente p) {
-    No *aux, *novo = malloc(sizeof(No));
-    if (novo) {
-        novo->paciente = p;
-        novo->proximo = NULL;
-        if (!*fila) {
-            *fila = novo;
-        } else {
-            aux = *fila;
-            while (aux->proximo) {
-                aux = aux->proximo;
+void Inserir(No **fila, Paciente p);
+void Remover(No **filaAP, No **filaAN, No **filaB, int *cont);
+void imprimir(No *filaAP, No *filaAN, No *filaB);
+
+int main() {
+
+    No *fila_AP = NULL, *fila_AN = NULL, *fila_B = NULL;
+    Paciente p;
+    int senha, idade, repete = 1, cont=10;
+    int *pCont = &cont;
+    char opcao, grupo;
+
+    printf("\n-------------------------------------------------------\n");
+    printf("\n Tabela de opcoes: i = inserir, r = remover, p = imprimir\n");
+    printf("\n-------------------------------------------------------\n");
+    printf("\nOs dados devem ser inseridos conforme o exemplo abaixo:\n");
+    printf("\nopcao: i senha: 1234 idade: 18 Grupo: A, na mesma linha.\n");
+    printf("\nEx: i 4321 20 A \n");
+    printf("\n-------------------------------------------------------\n");
+
+    while(repete == 1) {
+        scanf(" %c %d %d %c", &opcao, &senha, &idade, &grupo);
+        p.senha = senha;
+        p.idade = idade;
+
+        if(opcao == 'i' || opcao == 'I') {
+            if ((grupo == 'A' || grupo == 'a') && idade < 60) {
+                Inserir(&fila_AN, p);
+            } else if ((grupo == 'A' || grupo == 'a') && idade >= 60) {
+                Inserir(&fila_AP, p);
+            } else if (grupo == 'B' || grupo == 'b') {
+                Inserir(&fila_B, p);
             }
-            aux->proximo = novo;
+        } else if(opcao == 'r' || opcao == 'R') {
+            Remover(&fila_AP, &fila_AN, &fila_B, pCont);
+        } else if (opcao == 'p' || opcao == 'P') {
+            imprimir(fila_AP,fila_AN,fila_B);
+        } else {
+            printf("\nOpção ou dados inválidos...");
         }
-        printf("\nPaciente inserido com sucesso!\n");
-    } else {
-        printf("\nErro em alocar memória.\n");
+
     }
+    return 0;
 }
 
 void Remover(No **filaAP, No **filaAN, No **filaB, int *cont) {
     No *remover = NULL;
 
-    if (*cont > 0) {
-        if (*cont > 6) {
-            if (*filaAP) {
-                remover = *filaAP;
-                *filaAP = remover->proximo;
-                free(remover);
-                printf("\nRemoção da fila AP bem-sucedida!\n");
-                (*cont)--;
-            } else if (*cont > 2) {
-                if (*filaAN) {
-                    remover = *filaAN;
-                    *filaAN = remover->proximo;
-                    free(remover);
-                    printf("\nRemoção da fila AN bem-sucedida!\n");
-                    (*cont)--;
-                } else if (*cont > 0) {
-                    if (*filaB) {
-                        remover = *filaB;
-                        *filaB = remover->proximo;
-                        free(remover);
-                        printf("\nRemoção da fila B bem-sucedida!\n");
-                        (*cont)--;
-                    } else {
-                        *cont = 10;
-                    }
-                }
-            }
-        } 
-    } else {
-        printf("Todas as filas estao vazias.");
-        *cont = 10;
+    /* Verifica se a fila AP não está vazia e se o contador é maior que 6 */
+    if (*filaAP && *cont > 6) {
+        if (*filaAP) {
+            remover = *filaAP;
+            *filaAP = remover->proximo;
+            free(remover);
+            printf("\nRemoção da fila AP bem-sucedida!\n");
+            (*cont)--;
+        } else {
+            /* A fila AP está vazia */
+            *cont = 6;
+        }
     }
+
+    /* Verifica se a fila AN não está vazia */
+    else if (*cont <= 6 && *cont > 2) {
+        if (*filaAN) {
+            remover = *filaAN;
+            *filaAN = remover->proximo;
+            free(remover);
+            printf("\nRemoção da fila AN bem-sucedida!\n");
+            (*cont)--;
+        } else {
+            /* A fila AN está vazia */
+            *cont = 2;
+        }
+    }
+
+    /* Verifica se a fila B não está vazia */
+    else {
+        if (*filaB) {
+            remover = *filaB;
+            *filaB = remover->proximo;
+            free(remover);
+            printf("\nRemoção da fila B bem-sucedida!\n");
+            (*cont)--;
+        } else {
+            /* A fila B está vazia */
+            *cont = 10;
+        }
+    }
+
     printf("%d\n", *cont);
 }
-
 
 
 void imprimir(No *filaAP, No *filaAN, No *filaB) {
@@ -116,44 +150,22 @@ void imprimir(No *filaAP, No *filaAN, No *filaB) {
     printf("\n------------- FIM FILA -------------\n");
 }
 
-int main() {
-
-    No *fila_AP = NULL, *fila_AN = NULL, *fila_B = NULL;
-    Paciente p;
-    int senha, idade, repete = 1, cont=10;
-    int *pCont = &cont;
-    char opcao, grupo;
-
-    printf("\n-------------------------------------------------------\n");
-    printf("\n Tabela de opcoes: i = inserir, r = remover, p = imprimir\n");
-    printf("\n-------------------------------------------------------\n");
-    printf("\nOs dados devem ser inseridos conforme o exemplo abaixo:\n");
-    printf("\nopcao: i senha: 1234 idade: 18 Grupo: A, na mesma linha.\n");
-    printf("\nEx: i 4321 20 A \n");
-    printf("\n-------------------------------------------------------\n");
-
-    while(repete == 1) {
-        scanf(" %c %d %d %c", &opcao, &senha, &idade, &grupo);
-        p.senha = senha;
-        p.idade = idade;
-
-        if(opcao == 'i' || opcao == 'I') {
-            if ((grupo == 'A' || grupo == 'a') && idade < 60) {
-                Inserir(&fila_AN, p);
-            } else if ((grupo == 'A' || grupo == 'a') && idade >= 60) {
-                Inserir(&fila_AP, p);
-            } else if (grupo == 'B' || grupo == 'b') {
-                Inserir(&fila_B, p);
-            }
-        } else if(opcao == 'r' || opcao == 'R') {
-            Remover(&fila_AP, &fila_AN, &fila_B, pCont);
-        } else if (opcao == 'p' || opcao == 'P') {
-            imprimir(fila_AP,fila_AN,fila_B);
+void Inserir(No **fila, Paciente p) {
+    No *aux, *novo = malloc(sizeof(No));
+    if (novo) {
+        novo->paciente = p;
+        novo->proximo = NULL;
+        if (!*fila) {
+            *fila = novo;
         } else {
-            printf("\nOpção ou dados inválidos...");
+            aux = *fila;
+            while (aux->proximo) {
+                aux = aux->proximo;
+            }
+            aux->proximo = novo;
         }
-
+        printf("\nPaciente inserido com sucesso!\n");
+    } else {
+        printf("\nErro em alocar memória.\n");
     }
-
-    return 0;
 }
