@@ -95,7 +95,6 @@ int main() {
                         cont = 10;
                     }    
                 }          
-                printf("\n%d", cont);
             }
         } 
         
@@ -104,6 +103,7 @@ int main() {
         } 
         
         else if (opcao == 'f' || opcao == 'F') {
+            printf("\nEncerrando...");
             repete = 0;
         } 
         else {
